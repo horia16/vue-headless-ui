@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import useDialogContent from "../composables/use-dialog-content";
 const wrapper = ref<HTMLElement | null>(null);
-const { id } = useDialogContent(wrapper);
+useDialogContent(wrapper);
 </script>
 <template>
-  <div :id="id" ref="wrapper" aria-modal="true">
+  <div ref="wrapper" role="document">
     <slot />
   </div>
 </template>

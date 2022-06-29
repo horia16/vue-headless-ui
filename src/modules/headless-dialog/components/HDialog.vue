@@ -64,8 +64,16 @@ provide(keys.OPEN, open);
       :leave-active-class="transitionLeaveActiveClass"
       :leave-to-class="transitionLeaveToClass"
     >
-      <div v-if="open" :style="styleValue" :class="className">
-        <slot />
+      <div
+        v-if="open"
+        :id="dialogId"
+        :style="styleValue"
+        :class="className"
+        aria-modal="true"
+        :aria-labelledby="`${dialogId}_title`"
+        :aria-describedby="`${dialogId}_description`"
+      >
+        <slot :open="open" />
       </div>
     </transition>
   </teleport>

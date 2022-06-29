@@ -13,14 +13,14 @@ const accordion = defineComponent({
   props: {
     openByDefault: { type: Boolean, default: false }
   },
-  template: `
-    <HAccordion id="test_id" :animation-delay="700" :open-by-default="openByDefault">
-      <HAccordionToggle> Toggle </HAccordionToggle>
-        <HAccordionContent>
-          <h1>Content Block</h1>
-      </HAccordionContent>
-    </HAccordion>
-      `
+  template: /*html*/ `
+  <h-accordion id="test_id" :animation-delay="700" :open-by-default="openByDefault">
+    <h-accordion-toggle> Toggle </h-accordion-toggle>
+    <h-accordion-content>
+      <h1>Content Block</h1>
+    </h-accordion-content>
+  </h-accordion>
+  `
 });
 
 describe("acordion", () => {

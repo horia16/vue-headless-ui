@@ -9,7 +9,8 @@
     "postbuild": "rimraf ./dist/env.d.ts ./dist/auto-imports.d.ts ./dist/rollup_build.js ./dist/_development",
     "preview": "vite preview",
     "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage"
   },
   "files": [
     "dist"
@@ -33,6 +34,7 @@
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "@typescript-eslint/parser": "^5.29.0",
     "@vitejs/plugin-vue": "^2.3.3",
+    "@vitest/ui": "^0.16.0",
     "@vue/test-utils": "^2.0.0",
     "@zerollup/ts-transform-paths": "^1.7.18",
     "c8": "^7.11.3",
