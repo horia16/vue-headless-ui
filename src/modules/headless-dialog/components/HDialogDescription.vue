@@ -6,7 +6,6 @@ defineProps({
   htmlTag: { type: String, default: "div" }
 });
 const id = injectDefined(keys.ID);
-
 </script>
 
 <template>

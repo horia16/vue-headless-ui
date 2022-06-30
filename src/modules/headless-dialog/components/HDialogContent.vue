@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import useDialogContent from "../composables/use-dialog-content";
 const wrapper = ref<HTMLElement | null>(null);
+
 useDialogContent(wrapper);
 </script>
 <template>

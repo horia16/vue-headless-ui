@@ -17,6 +17,7 @@ export default function (wrapper: Ref<HTMLElement | null>) {
     // If we are already focused on an element form this array we should not not reset the focus.
     if (focusableContent) {
       let shouldResetFocus = true;
+
       for (let index = 0; index < focusableContent.length; index++) {
         if (document.activeElement === focusableContent[index]) {
           shouldResetFocus = false;
@@ -32,10 +33,11 @@ export default function (wrapper: Ref<HTMLElement | null>) {
 
   function onKeyDown(event: KeyboardEvent) {
     // If the last active dialog is this
-    if (activeDialogs.value[activeDialogs.value.length - 1] == id.value) {
+    if (activeDialogs.value[activeDialogs.value.length - 1] === id.value) {
       if (open?.value && focusableContent) {
-        const isTabPressed = event.key == "Tab";
-        if (event.key == "Escape") {
+        const isTabPressed = event.key === "Tab";
+
+        if (event.key === "Escape") {
           open.value = false;
         }
         if (!isTabPressed) {
@@ -46,11 +48,9 @@ export default function (wrapper: Ref<HTMLElement | null>) {
             focusableContent[focusableContent.length - 1].focus();
             event.preventDefault();
           }
-        } else {
-          if (document.activeElement === focusableContent[focusableContent.length - 1]) {
-            focusableContent[0].focus();
-            event.preventDefault();
-          }
+        } else if (document.activeElement === focusableContent[focusableContent.length - 1]) {
+          focusableContent[0].focus();
+          event.preventDefault();
         }
       }
     }

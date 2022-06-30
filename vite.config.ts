@@ -14,7 +14,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": resolve(__dirname, "./src")
-    }
+    },
+    dedupe: ["vue"]
   },
   build: {
     lib: {
@@ -31,7 +32,6 @@ export default defineConfig({
       }
     }
   },
-
   plugins: [
     vue(),
     esLint(),

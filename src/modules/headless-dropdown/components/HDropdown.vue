@@ -1,20 +1,29 @@
 <script lang="ts" setup>
+import unknownVueProp from "@/utilities/unknown-vue-prop";
+import { PropType } from "vue";
+import useCombobox from "../composables/use-combobox";
+
 const props = defineProps({
   id: {
     type: String,
     default: undefined
   },
   modelValue: {
-    type: [String, Object],
-    default: undefined
+    type: unknownVueProp,
+    default: null
   },
-  placeholder: {}
+  items: {
+    type: Array as PropType<Array<{ label: unknown; value: unknown }>>,
+    required: true
+  }
 });
 
-const emit = defineEmits<(e: "update:modelValue", value: string | Record<string, unknown>) => void>();
+const emit = defineEmits<(e: "update:modelValue", value: unknown) => void>();
 
+const { onKeyPress, showDropdown, show, hide, model, activeDescendant } = useCombobox(props, emit);
 
+const value = ref(null);
 </script>
 <template>
-  <div></div>
+  <slot></slot>
 </template>

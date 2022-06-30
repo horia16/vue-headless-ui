@@ -21,14 +21,12 @@ const height = ref(window.innerHeight);
 
 const { open, dialogId } = useDialog(props, emit);
 
-const styleValue = computed(() => {
-  return [
+const styleValue = computed(() => [
     props.style,
     props.fullScreen
       ? { top: 0, left: 0, position: "fixed", width: "100vw", height: `${height.value}px`, zIndex: props.zIndex }
       : {}
-  ] as StyleValue;
-});
+  ] as StyleValue);
 
 function updateHeight() {
   height.value = window.innerHeight;

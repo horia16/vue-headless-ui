@@ -18,7 +18,7 @@ const dialog = defineComponent({
 
     return { open };
   },
-  template: /*html*/ `
+  template: `
   <div>
     <button @click="open = true">Open</button>
   </div>
@@ -26,7 +26,7 @@ const dialog = defineComponent({
     <h-dialog-content>
       <button @click="open = false">close_button</button>
       <h-dialog-title html-tag="h1">dialog_title</h-dialog-title>
-      <h-dialog-description html-tag="p">dialog_descriotion</h-dialog-description>
+      <h-dialog-description html-tag="p">dialog_description</h-dialog-description>
     </h-dialog-content>
   </h-dialog>
   `
@@ -36,6 +36,7 @@ describe("dialog", () => {
   it("should open", async () => {
     const wrapper = mount(dialog, { attachTo: "body" });
     const button = wrapper.find("button");
+
     await button.trigger("click");
     expect(document.body.innerHTML).toMatchSnapshot();
   });
@@ -43,6 +44,7 @@ describe("dialog", () => {
   it("should close", async () => {
     const wrapper = mount(dialog, { props: { openByDefault: true }, attachTo: "body" });
     const button = wrapper.find("button");
+
     await button.trigger("click");
     expect(document.body.innerHTML).toMatchSnapshot();
   });

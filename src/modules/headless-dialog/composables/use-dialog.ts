@@ -6,9 +6,7 @@ export default function (
   props: { modelValue: boolean; id?: string },
   emit: { (e: "update:modelValue", value: boolean): void }
 ) {
-  const dialogId = computed(() => {
-    return props.id ? `${props.id}` : `dialog_${randomString()}`;
-  });
+  const dialogId = computed(() => (props.id ? `${props.id}` : `dialog_${randomString()}`));
 
   const open = computed({
     get: () => props.modelValue,
@@ -34,9 +32,9 @@ export default function (
       }
     } else {
       // Closing the dialog so remove it from the array. It should always be on top for nested dialogs.
-      activeDialogs.value = activeDialogs.value.filter((x) => x != dialogId.value);
+      activeDialogs.value = activeDialogs.value.filter((x) => x !== dialogId.value);
       // If we have note left remove the overflow from the body
-      if (activeDialogs.value.length == 0) {
+      if (activeDialogs.value.length === 0) {
         document.body.style.overflow = "";
       }
       // Focus back on the element that we were focused on prior to opening the modal
@@ -45,5 +43,6 @@ export default function (
       }
     }
   });
+
   return { open, dialogId };
 }
