@@ -3,12 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
+    "prepare": "husky install",
     "dev": "vite",
     "prebuild": "rimraf ./dist",
     "build": "vue-tsc --noEmit && vite build && rollup --config rollup.config.js",
     "postbuild": "rimraf ./dist/env.d.ts ./dist/auto-imports.d.ts ./dist/rollup_build.js ./dist/_development",
     "preview": "vite preview",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage"
   },
@@ -42,6 +44,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-vue": "^9.1.1",
     "happy-dom": "^5.3.1",
+    "husky": "^8.0.1",
     "rimraf": "^3.0.2",
     "rollup-plugin-typescript2": "^0.32.1",
     "rollup-plugin-vue": "^6.0.0",
