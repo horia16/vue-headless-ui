@@ -5,6 +5,7 @@ import vue from "@vitejs/plugin-vue";
 import { resolve } from "path";
 import autoImport from "unplugin-auto-import/vite";
 import esLint from "vite-plugin-eslint";
+import dts from "vite-plugin-dts";
 
 export default defineConfig({
   test: {
@@ -20,14 +21,15 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, "./src/index.ts"),
-      name: "MyLib",
+      name: "VueHeadlessUI",
       fileName: (format) => `vue-headless-ui.${format}.js`
     },
     rollupOptions: {
-      external: ["vue"],
+      external: ["vue", "vee-validate"],
       output: {
         globals: {
-          vue: "Vue"
+          vue: "Vue",
+          "vee-validate": "VeeValidate"
         }
       }
     }
@@ -35,6 +37,7 @@ export default defineConfig({
   plugins: [
     vue(),
     esLint(),
+    dts(),
     autoImport({
       imports: ["vue"],
       dts: "src/auto-imports.d.ts"

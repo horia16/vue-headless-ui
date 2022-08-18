@@ -1,32 +1,16 @@
 import keys from "../keys";
 import randomString from "@/utilities/random-string";
+import prop from "@/utilities/prop";
 
-export default defineComponent({
+export default /* @__PURE__ */ defineComponent({
   name: "HAccordion",
   props: {
-    id: {
-      type: String,
-      default: undefined
-    },
-    modelValue: {
-      type: Boolean,
-      default: undefined
-    },
-    openByDefault: {
-      type: Boolean,
-      default: false
-    },
-    animationDelay: {
-      type: Number,
-      default: 0
-    },
-    transitionCurve: {
-      type: String,
-      default: "cubic-bezier(0.4, 0, 0.2, 1)"
-    }
+    id: prop<string>(),
+    modelValue: prop<boolean>(),
+    openByDefault: prop<boolean>(false)
   },
   emits: {
-    "update:modelValue": (value: boolean) => value
+    "update:modelValue": (_value: boolean) => true
   },
   setup(props, { emit, slots }) {
     const accordionId = computed(() => (props.id ? `${props.id}` : `accordion_${randomString()}`));
@@ -41,8 +25,6 @@ export default defineComponent({
         }
       }
     });
-    const animationDelay = computed(() => props.animationDelay);
-    const transitionCurve = computed(() => props.transitionCurve);
 
     function toggleAccordion() {
       open.value = !open.value;
@@ -50,8 +32,6 @@ export default defineComponent({
 
     provide(keys.ID, accordionId);
     provide(keys.OPEN, open);
-    provide(keys.ANIMATION_DELAY, animationDelay);
-    provide(keys.TRANSITION_CURVE, transitionCurve);
     provide(keys.TOGGLE_ACCORDION, toggleAccordion);
 
     return () =>

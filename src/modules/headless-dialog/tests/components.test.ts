@@ -1,52 +1,75 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 import { mount } from "@vue/test-utils";
 import { HDialog, HDialogContent, HDialogTitle, HDialogDescription } from "../";
 
+document.body.innerHTML = '<div id="app"></div>';
+
 const dialog = defineComponent({
-  components: {
-    HDialog,
-    HDialogContent,
-    HDialogTitle,
-    HDialogDescription
-  },
   props: {
     openByDefault: { type: Boolean, default: false }
   },
   setup(props) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const open = ref(props.openByDefault);
 
-    return { open };
-  },
-  template: `
-  <div>
-    <button @click="open = true">Open</button>
-  </div>
-  <h-dialog id='fixed_id' v-model="open">
-    <h-dialog-content>
-      <button @click="open = false">close_button</button>
-      <h-dialog-title html-tag="h1">dialog_title</h-dialog-title>
-      <h-dialog-description html-tag="p">dialog_description</h-dialog-description>
-    </h-dialog-content>
-  </h-dialog>
-  `
+    function updateOpen(value: boolean) {
+      open.value = value;
+    }
+
+    return () => [
+      h("div", {}, h("button", { id: "open", onClick: () => updateOpen(!open.value) }, "Open Dialog")),
+      h(HDialog, { id: "fixed_id", modelValue: open.value, "onUpdate:modelValue": (value) => updateOpen(value) }, () =>
+        h(HDialogContent, {}, () => [
+          h(HDialogTitle, { htmlTag: "h1" }, () => "dialog_title"),
+          h(HDialogDescription, { htmlTag: "p" }, () => "dialog_description")
+        ])
+      )
+    ];
+  }
 });
 
 describe("dialog", () => {
-  it("should open", async () => {
-    const wrapper = mount(dialog, { attachTo: "body" });
-    const button = wrapper.find("button");
+  afterEach(() => {
+    document.body.innerHTML = '<div id="app"></div>';
+  });
 
-    await button.trigger("click");
-    expect(document.body.innerHTML).toMatchSnapshot();
+  it("should be open by default", () => {
+    mount(dialog, {
+      props: { openByDefault: true },
+      attachTo: document.getElementById("app") ?? document.body
+    });
+
+    expect(document.body.innerText).toMatchSnapshot();
+  });
+
+  it("should be closed by default", () => {
+    mount(dialog, {
+      props: { openByDefault: false },
+      attachTo: document.getElementById("app") ?? document.body
+    });
+    expect(document.body.innerText).toMatchSnapshot();
+  });
+
+  it("should open", async () => {
+    const wrapper = mount(dialog, { attachTo: document.getElementById("app") ?? document.body });
+
+    wrapper.find("button").trigger("click");
+
+    await nextTick();
+
+    expect(document.body.innerText).toMatchSnapshot();
   });
 
   it("should close", async () => {
-    const wrapper = mount(dialog, { props: { openByDefault: true }, attachTo: "body" });
-    const button = wrapper.find("button");
+    const wrapper = mount(dialog, {
+      props: { openByDefault: true },
+      attachTo: document.getElementById("app") ?? document.body
+    });
 
-    await button.trigger("click");
-    expect(document.body.innerHTML).toMatchSnapshot();
+    wrapper.find("button").trigger("click");
+
+    await nextTick();
+
+    expect(document.body.innerText).toMatchSnapshot();
   });
 
   it("should trap the focus", async () => {

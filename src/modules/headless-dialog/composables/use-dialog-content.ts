@@ -1,23 +1,25 @@
-import type { Ref } from "vue";
 import injectDefined from "@/utilities/inject-defined";
 import keys from "../keys";
 import { activeDialogs } from "./use-dialog";
 
 const focusableElements =
-  'button:not([disabled="true"]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+  'button:not([disabled="true"]), a:not([disabled="true"]), input:not([disabled="true"]), select:not([disabled="true"]), textarea:not([disabled="true"]), [tabindex]:not([tabindex="-1"])';
 
-export default function (wrapper: Ref<HTMLElement | null>) {
+export default function () {
+  const wrapper = ref<HTMLElement | null>(null);
+
   const open = injectDefined(keys.OPEN);
   const id = injectDefined(keys.ID);
 
   let focusableContent: null | NodeListOf<HTMLElement> | undefined = null;
 
-  function reloadDomArray(wrapper: HTMLElement) {
-    focusableContent = wrapper.querySelectorAll<HTMLElement>(focusableElements);
-    // If we are already focused on an element form this array we should not not reset the focus.
+  function reloadDomArray() {
+    focusableContent = wrapper.value ? wrapper.value.querySelectorAll<HTMLElement>(focusableElements) : null;
+
     if (focusableContent) {
       let shouldResetFocus = true;
 
+      // If we are already focused on an element form this array we should not not reset the focus.
       for (let index = 0; index < focusableContent.length; index++) {
         if (document.activeElement === focusableContent[index]) {
           shouldResetFocus = false;
@@ -30,6 +32,8 @@ export default function (wrapper: Ref<HTMLElement | null>) {
       }
     }
   }
+
+  const domObserver = new MutationObserver(reloadDomArray);
 
   function onKeyDown(event: KeyboardEvent) {
     // If the last active dialog is this
@@ -58,20 +62,18 @@ export default function (wrapper: Ref<HTMLElement | null>) {
 
   onMounted(() => {
     document.addEventListener("keydown", onKeyDown);
-    nextTick(() => {
-      if (wrapper.value) reloadDomArray(wrapper.value);
-    });
+    reloadDomArray();
+    if (wrapper.value) {
+      domObserver.observe(wrapper.value, { attributes: true, childList: true, subtree: true });
+    } else {
+      throw new Error("The content element is not mounted. This is probably an internal bug.");
+    }
   });
 
   onBeforeUnmount(() => {
+    if (wrapper.value) domObserver.disconnect();
     document.removeEventListener("keydown", onKeyDown);
   });
 
-  onUpdated(() => {
-    nextTick(() => {
-      if (wrapper.value) reloadDomArray(wrapper.value);
-    });
-  });
-
-  return { id };
+  return { id, wrapper };
 }

@@ -1,37 +1,27 @@
-import useContent, { AccordionContentState } from "../composables/use-content";
+import injectDefined from "@/utilities/inject-defined";
+import prop from "@/utilities/prop";
+import { renderSlot } from "vue";
+import keys from "../keys";
 
-export default defineComponent({
+export default /* @__PURE__ */ defineComponent({
   name: "HAccordionContent",
   props: {
-    htmlTag: {
-      type: String,
-      default: "div"
-    },
-    style: {
-      type: [String, Object, Array],
-      default: undefined
-    }
+    htmlTag: prop<string>("div")
   },
-  setup(props, { slots }) {
-    const wrapper = ref<HTMLElement | null>(null);
-    const { state, accordionId, computedStyle } = useContent(wrapper);
+  setup(_props, { slots }) {
+    const open = injectDefined(keys.OPEN);
+    const accordionId = injectDefined(keys.ID);
 
-    return () => {
-      if (state.value === AccordionContentState.CLOSED) return null;
-
-      return h(
+    return () =>
+      open.value &&
+      h(
         "div",
         {
           id: accordionId.value,
           role: "region",
-          ref: wrapper,
-          style: [props.style, computedStyle.value],
           "aria-labelledby": `${accordionId.value}_toggle`
         },
-        {
-          default: () => slots.default && slots.default()
-        }
+        renderSlot(slots, "default")
       );
-    };
   }
 });

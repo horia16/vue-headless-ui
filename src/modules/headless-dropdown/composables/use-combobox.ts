@@ -20,6 +20,7 @@ export default function (
   function show() {
     showDropdown.value = true;
   }
+
   function hide() {
     showDropdown.value = false;
   }
@@ -34,10 +35,10 @@ export default function (
   }
 
   function updateActiveDescendant(isUp: boolean) {
-    if (isUp && activeDescendant.value != 0) {
+    if (isUp && activeDescendant.value !== 0) {
       activeDescendant.value--;
     }
-    if (!isUp && activeDescendant.value != items.value.length - 1) {
+    if (!isUp && activeDescendant.value !== items.value.length - 1) {
       activeDescendant.value++;
     }
   }
@@ -69,7 +70,7 @@ export default function (
   provide(keys.MODEL, model);
   provide(keys.ITEMS, items);
   provide(keys.ACTIVE_DESCENDANT, activeDescendant);
-  
+
   return {
     onKeyPress,
     showDropdown,

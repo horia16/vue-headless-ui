@@ -1,24 +1,19 @@
 import injectDefined from "@/utilities/inject-defined";
+import prop from "@/utilities/prop";
 import { renderSlot } from "vue";
 import keys from "../keys";
 
-export default defineComponent({
+export default /* @__PURE__ */ defineComponent({
   name: "HAccordionToggle",
+  inheritAttrs: false,
   props: {
-    htmlTag: {
-      type: String,
-      default: "button"
-    },
-    style: {
-      type: [String, Object, Array],
-      default: undefined
-    }
+    htmlTag: prop<string>("button")
   },
   setup(props, { slots, attrs }) {
     const accordionId = injectDefined(keys.ID);
     const open = injectDefined(keys.OPEN);
     const toggleAccordion = injectDefined(keys.TOGGLE_ACCORDION);
-    const componentId = computed(() => `${accordionId?.value}_toggle`);
+    const componentId = computed(() => `${accordionId.value}_toggle`);
 
     return () =>
       renderSlot(slots, "wrapper", {}, () => [
@@ -27,12 +22,11 @@ export default defineComponent({
           {
             ...attrs,
             id: componentId.value,
-            style: props.style,
             "aria-controls": open.value ? accordionId.value : undefined,
             "aria-expanded": open.value,
             onClick: () => toggleAccordion()
           },
-          { default: () => slots.default && slots.default() }
+          renderSlot(slots, "default")
         )
       ]);
   }

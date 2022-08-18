@@ -15,7 +15,7 @@ const accordion = defineComponent({
   },
   setup(props) {
     return () =>
-      h(HAccordion, { id: "test_id", animationDelay: 700, openByDefault: props.openByDefault }, () => [
+      h(HAccordion, { id: "test_id", openByDefault: props.openByDefault }, () => [
         h(HAccordionToggle, {}, () => "Toggle"),
         h(HAccordionContent, {}, () => h("h1", "Content Block"))
       ]);
@@ -50,14 +50,6 @@ describe("accordion", () => {
     vi.runAllTimers();
     await nextTick();
     expect(wrapper.text().includes("Content Block")).toBeFalsy();
-  });
-
-  it("should still be closing/animating", async () => {
-    const wrapper = mount(accordion, { props: { openByDefault: true }, attachTo: "body" });
-
-    await wrapper.find("button").trigger("click");
-    await nextTick();
-    expect(wrapper.text().includes("Content Block")).toBeTruthy();
   });
 
   it("should have content visible form the start", async () => {
