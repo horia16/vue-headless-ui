@@ -1,5 +1,8 @@
 import { TransitionProps } from "vue";
 
+/**
+ * All transition Types and Props for a Transition component.
+ */
 export type TransitionPropsAndEvents = TransitionProps & {
   onEnter: (el: HTMLElement, done: () => void) => void;
   onLeave: (el: HTMLElement, done: () => void) => void;

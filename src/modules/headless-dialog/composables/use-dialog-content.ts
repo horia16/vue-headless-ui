@@ -36,27 +36,23 @@ export default function () {
   const domObserver = new MutationObserver(reloadDomArray);
 
   function onKeyDown(event: KeyboardEvent) {
-    // If the last active dialog is this
-    if (activeDialogs.value[activeDialogs.value.length - 1] === id.value) {
-      if (open?.value && focusableContent) {
-        const isTabPressed = event.key === "Tab";
+    // If the last active dialog is not this one or it's not open or it doesn't have focusable content we should not do anything.
+    if (activeDialogs.value[activeDialogs.value.length - 1] !== id.value || !open.value || !focusableContent) return;
 
-        if (event.key === "Escape") {
-          open.value = false;
-        }
-        if (!isTabPressed) {
-          return;
-        }
-        if (event.shiftKey) {
-          if (document.activeElement === focusableContent[0]) {
-            focusableContent[focusableContent.length - 1].focus();
-            event.preventDefault();
-          }
-        } else if (document.activeElement === focusableContent[focusableContent.length - 1]) {
-          focusableContent[0].focus();
-          event.preventDefault();
-        }
+    const isTabPressed = event.key === "Tab";
+
+    if (event.key === "Escape") open.value = false;
+
+    if (!isTabPressed) return;
+
+    if (event.shiftKey) {
+      if (document.activeElement === focusableContent[0]) {
+        focusableContent[focusableContent.length - 1].focus();
+        event.preventDefault();
       }
+    } else if (document.activeElement === focusableContent[focusableContent.length - 1]) {
+      focusableContent[0].focus();
+      event.preventDefault();
     }
   }
 

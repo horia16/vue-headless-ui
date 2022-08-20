@@ -5,9 +5,9 @@ export interface PropTypes {
   modelValue?: unknown;
   options?: Array<Record<string, unknown>>;
   rules?: Array<Rule>;
-  radio: boolean;
-  checkbox: boolean;
-  textarea: boolean;
+  radio: boolean | string;
+  checkbox: boolean | string;
+  textarea: boolean | string;
 }
 
 export type InputState = "CLEAR" | "VALID" | "ERROR";

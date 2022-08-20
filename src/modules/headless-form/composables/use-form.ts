@@ -1,4 +1,4 @@
-import { useParentValidator } from "@/modules/validator/parent";
+import { useParentValidator } from "@/modules/validator";
 
 export default function (emit: { (e: "submit-valid"): void; (e: "submit-error"): void }) {
   const { validate } = useParentValidator();

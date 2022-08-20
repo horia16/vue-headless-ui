@@ -13,7 +13,7 @@ export default defineComponent({
     modelValue: prop<boolean>(),
     fullScreen: prop<boolean>(true),
     style: prop<StyleValue>(),
-    transition: prop<Partial<TransitionPropsAndEvents>>()
+    transition: prop<Partial<TransitionPropsAndEvents>>(()=>({}))
   },
   emits: {
     "update:modelValue": (_value: boolean) => true
@@ -55,9 +55,7 @@ export default defineComponent({
         { to: "body" },
         h(
           Transition,
-          {
-            ...props.transition
-          },
+          props.transition,
           () =>
             open.value &&
             h(

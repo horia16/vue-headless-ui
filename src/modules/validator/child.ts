@@ -25,8 +25,8 @@ export function useChildValidator<T>(
 
   function bind(value: Ref<T> | ComputedRef<T> | WritableComputedRef<T>) {
     watch(value, (newValue) => {
-      internalState.value = newValue;
       if (getGlobalValidationMode() === ValidationModes.AGGRESSIVE) touched.value = true;
+      internalState.value = newValue;
     });
   }
 
@@ -37,8 +37,7 @@ export function useChildValidator<T>(
     if (!touched.value && validationMode === ValidationModes.LAZY) {
       return true;
     }
-    for (let index = 0; index < rules.value.length; index++) {
-      const rule = rules.value[index];
+    for (const rule of rules.value) {
       // We need to wait for each rule to be resolved
       // eslint-disable-next-line no-await-in-loop
       const result = await rule(internalState.value);
@@ -59,9 +58,7 @@ export function useChildValidator<T>(
   });
 
   onBeforeUnmount(() => {
-    if (children[name]) {
-      delete children[name];
-    }
+    if (children[name]) delete children[name];
   });
 
   async function onBlur() {

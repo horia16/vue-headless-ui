@@ -8,9 +8,7 @@ export function useParentValidator() {
     let isValid = true;
     const childrenArray = Object.values(children);
 
-    for (let index = 0; index < childrenArray.length; index++) {
-      const child = childrenArray[index];
-
+    for (const child of childrenArray) {
       // eslint-disable-next-line no-await-in-loop
       const valid = await child.onBlur();
 

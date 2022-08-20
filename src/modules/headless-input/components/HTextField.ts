@@ -1,5 +1,6 @@
 import injectDefined from "@/utilities/inject-defined";
 import keys from "../keys";
+import createDefaultInputProps from "../utilities/create-default-input-props";
 
 export default defineComponent({
   name: "HTextField",
@@ -8,17 +9,14 @@ export default defineComponent({
     const inputId = injectDefined(keys.INPUT_ID);
     const inputName = injectDefined(keys.INPUT_NAME);
     const textarea = injectDefined(keys.TEXTAREA);
+    const state = injectDefined(keys.STATE);
+    const errorMessage = injectDefined(keys.ERROR_MESSAGE);
     const onBlur = injectDefined(keys.ON_BLUR);
 
     return () =>
-      h(textarea.value ? "textarea" : "input", {
-        id: inputId,
-        name: inputName,
-        value: inputValue.value,
-        onInput: (e: InputEvent) => {
-          inputValue.value = (e.target as HTMLInputElement | HTMLTextAreaElement).value;
-        },
-        onBlur
-      });
+      h(
+        textarea.value ? "textarea" : "input",
+        createDefaultInputProps(inputId, inputName, inputValue, state, errorMessage, onBlur)
+      );
   }
 });

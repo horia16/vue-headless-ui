@@ -1,6 +1,6 @@
 import randomString from "@/utilities/random-string";
 
-import { useChildValidator } from "@/modules/validator/child";
+import { useChildValidator } from "@/modules/validator";
 import { InputState, PropTypes } from "../types";
 
 export default function (props: PropTypes, emit: { (e: "update:modelValue", value: unknown): void }) {
